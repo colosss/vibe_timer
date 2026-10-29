@@ -16,6 +16,9 @@ dist-ssr
 src-tauri/target
 src-tauri/gen/schemas
 
+# Готовые пакеты (собираются локально, в git не входят)
+release/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

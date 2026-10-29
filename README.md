@@ -80,7 +80,42 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 ```
 
-### Сборка приложения
+### Готовые пакеты (без сборки)
+
+Готовые пакеты собираются в локальную папку `release/` (в git не входит):
+
+```bash
+npm run package
+```
+
+В текущей рабочей копии они уже собраны:
+
+| Файл | Для чего |
+|---|---|
+| `vibe-timer-0.1.0-x86_64.AppImage` | Один самодостаточный файл, работает без установки |
+| `vibe-timer-0.1.0-1.x86_64.rpm` | Fedora / RHEL, установка в систему |
+| `vibe-timer_0.1.0_amd64.deb` | Ubuntu / Debian |
+
+Самый простой способ:
+
+```bash
+cd release
+./install.sh              # установить системный пакет (RPM/DEB)
+./install.sh --appimage   # или поставить AppImage только для пользователя
+```
+
+Либо вручную (Fedora):
+
+```bash
+sudo dnf install ./release/vibe-timer-0.1.0-1.x86_64.rpm
+```
+
+После установки приложение появится в меню как **Vibe Timer**. Подробнее —
+`release/INSTALL.md` (создаётся командой `npm run package`).
+
+---
+
+### Сборка из исходников
 
 ```bash
 # Клонировать или перейти в директорию проекта
@@ -97,7 +132,7 @@ npm run tauri build
 ```
 
 **Результат сборки:**
-- **Linux:** `src-tauri/target/release/bundle/appimage/*.AppImage` и `.../deb/*.deb`
+- **Linux:** `src-tauri/target/release/bundle/appimage/*.AppImage`, `.../rpm/*.rpm` и `.../deb/*.deb`
 - **Windows:** `src-tauri/target/release/bundle/msi/*.msi`
 
 ---
