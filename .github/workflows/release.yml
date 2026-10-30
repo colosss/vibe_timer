@@ -106,16 +106,17 @@ jobs:
       - name: Collect assets
         run: |
           mkdir -p dist
-          cp artifacts/packages-linux/*.AppImage dist/vibe-timer-x86_64.AppImage
-          cp artifacts/packages-linux/*.deb dist/vibe-timer_amd64.deb
-          cp artifacts/packages-linux/*.rpm dist/vibe-timer-x86_64.rpm
-          cp artifacts/packages-windows/*.exe dist/vibe-timer_x64-setup.exe
-          cp artifacts/packages-windows/*.msi dist/vibe-timer_x64.msi
+          find artifacts/packages-linux -name '*.AppImage' -exec cp {} dist/vibe-timer-x86_64.AppImage \;
+          find artifacts/packages-linux -name '*.deb' -exec cp {} dist/vibe-timer_amd64.deb \;
+          find artifacts/packages-linux -name '*.rpm' -exec cp {} dist/vibe-timer-x86_64.rpm \;
+          find artifacts/packages-windows -name '*.exe' -exec cp {} dist/vibe-timer_x64-setup.exe \;
+          find artifacts/packages-windows -name '*.msi' -exec cp {} dist/vibe-timer_x64.msi \;
           cp scripts/install.sh dist/install.sh
           cp scripts/INSTALL.md dist/INSTALL.md
           cp src-tauri/icons/128x128.png dist/vibe-timer.png
           chmod +x dist/install.sh
           cd dist
+          ls -lh
           sha256sum \
             vibe-timer-x86_64.AppImage \
             vibe-timer_amd64.deb \
@@ -124,7 +125,6 @@ jobs:
             vibe-timer_x64.msi \
             install.sh INSTALL.md vibe-timer.png > SHA256SUMS
           sha256sum -c SHA256SUMS
-          ls -lh
 
       - uses: softprops/action-gh-release@v2
         with:
