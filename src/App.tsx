@@ -81,15 +81,20 @@ function App() {
 
     register(
       listen<number>("timer_warning", (event) => {
-        setWarning({ seconds: event.payload });
-
         const currentConfig = useTimerStore.getState().config;
-        if (currentConfig) {
-          invoke("trigger_notification", {
-            notificationType: currentConfig.notification_type,
-            volume: currentConfig.sound_volume,
-          }).catch(console.error);
+        if (!currentConfig) {
+          return;
         }
+
+        const type = currentConfig.notification_type;
+        if (type === "notification" || type === "both") {
+          setWarning({ seconds: event.payload });
+        }
+
+        invoke("trigger_notification", {
+          notificationType: type,
+          volume: currentConfig.sound_volume,
+        }).catch(console.error);
       })
     );
 

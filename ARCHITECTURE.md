@@ -99,16 +99,16 @@ Backend: remaining <= warning_time (один раз)
          ▼
     App.tsx: listen("timer_warning")
          │
-         ├─ Показать модальное окно с обратным отсчётом
+         ├─ Notification | Both → показать модальное окно с обратным отсчётом
          ├─ Прочитать config из store
          └─ invoke("trigger_notification", { notificationType, volume })
                   │
                   ▼
              notifications.rs
-             ├─ Sound  → rodio (синусоида 800 Гц, 300 мс)
-             ├─ Visual → request_user_attention(Critical)
-             ├─ Both   → звук + внимание
-             └─ Silent → ничего
+             ├─ Sound        → rodio (синусоида 800 Гц, 300 мс)
+             ├─ Notification → показать и сфокусировать окно
+             ├─ Both         → показать окно + звук
+             └─ Silent       → ничего
 ```
 
 ### 3. Завершение таймера
@@ -207,10 +207,12 @@ Backend: remaining == 0
 
 ### `notifications.rs` — оповещения
 
-- `NotificationType`: `sound | visual | both | silent`.
+- `NotificationType`: `sound | notification | both | silent`.
 - Звук генерируется через rodio в `spawn_blocking`, чтобы не блокировать
   IPC-поток.
-- Световое оповещение — `request_user_attention(Critical)`.
+- Уведомление показывает и фокусирует окно (в том числе из трея).
+- Старое значение `visual` читается как `notification` благодаря
+  `#[serde(alias = "visual")]`.
 
 ### `presets.rs` — пресеты
 
@@ -266,7 +268,6 @@ Backend: remaining == 0
 | `execute_power_action` | `action` | `string` |
 | `test_power_action` | `action` | `string` |
 | `trigger_notification` | `notificationType`, `volume` | `()` |
-| `test_notification` | `notificationType`, `volume` | `string` |
 | `load_presets` | — | `Preset[]` |
 | `add_preset` | `preset` | `()` |
 | `update_preset` | `oldName`, `preset` | `()` |

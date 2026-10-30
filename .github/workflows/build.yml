@@ -18,7 +18,7 @@ jobs:
         include:
           - name: Linux x86_64 (Ubuntu 22.04)
             os: ubuntu-22.04
-            bundles: deb,appimage
+            bundles: deb,appimage,rpm
           - name: Windows x86_64
             os: windows-latest
             bundles: msi,nsis
@@ -65,6 +65,7 @@ jobs:
           path: |
             src-tauri/target/release/bundle/deb/*.deb
             src-tauri/target/release/bundle/appimage/*.AppImage
+            src-tauri/target/release/bundle/rpm/*.rpm
 
       - name: Upload Windows packages
         if: runner.os == 'Windows'

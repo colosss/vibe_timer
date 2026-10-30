@@ -2,6 +2,33 @@
 
 Минималистичный кроссплатформенный таймер для автоматического управления питанием системы. Создан для случаев, когда запускается сериал на ночь и система должна сама выключиться по завершении.
 
+## 📥 Скачать
+
+[![Последний релиз](https://img.shields.io/github/v/release/colosss/vibe_timer?style=for-the-badge&logo=github&label=Download&color=0891b2)](https://github.com/colosss/vibe_timer/releases/latest)
+[![Всего скачиваний](https://img.shields.io/github/downloads/colosss/vibe_timer/total?style=for-the-badge&color=0891b2)](https://github.com/colosss/vibe_timer/releases)
+[![Build packages](https://github.com/colosss/vibe_timer/actions/workflows/build.yml/badge.svg)](https://github.com/colosss/vibe_timer/actions/workflows/build.yml)
+
+Все готовые сборки — в разделе **[Releases](https://github.com/colosss/vibe_timer/releases/latest)**
+(кнопка **Download** ведёт туда же).
+
+| Система | Файл | Что это |
+|---|---|---|
+| Windows 10/11 | [vibe-timer_x64-setup.exe](https://github.com/colosss/vibe_timer/releases/latest/download/vibe-timer_x64-setup.exe) | установщик (NSIS) |
+| Windows 10/11 | [vibe-timer_x64.msi](https://github.com/colosss/vibe_timer/releases/latest/download/vibe-timer_x64.msi) | MSI-пакет |
+| Linux x86_64 (Ubuntu 22.04+, Debian 12+, Fedora 40+, Arch) | [vibe-timer-x86_64.AppImage](https://github.com/colosss/vibe_timer/releases/latest/download/vibe-timer-x86_64.AppImage) | один файл, без установки |
+| Ubuntu 22.04+ / Debian 12+ | [vibe-timer_amd64.deb](https://github.com/colosss/vibe_timer/releases/latest/download/vibe-timer_amd64.deb) | системный пакет |
+| Fedora 40+ / RHEL 10 | [vibe-timer-x86_64.rpm](https://github.com/colosss/vibe_timer/releases/latest/download/vibe-timer-x86_64.rpm) | системный пакет |
+
+AppImage не требует установки:
+
+```bash
+chmod +x vibe-timer-x86_64.AppImage
+./vibe-timer-x86_64.AppImage
+```
+
+В релизе также лежат `install.sh` (установка AppImage в меню), `INSTALL.md`
+и `SHA256SUMS` для проверки целостности.
+
 ## ✨ Основные возможности
 
 ### 🎯 Базовый функционал
@@ -17,9 +44,9 @@
 
 ### 🔔 Оповещения
 - 🔊 **Звуковое** — beep-сигнал с настраиваемой громкостью (0-100%)
-- 💡 **Световое** — мигание окна (привлечение внимания)
-- 🔊💡 **Комбинированное** — звук + световой сигнал
-- 🔇 **Беззвучное** — только модальное окно
+- 🔔 **Уведомление** — всплывающее окно с обратным отсчётом и кнопкой отмены
+- 🔊🔔 **Звук + уведомление** — одновременно
+- 🔇 **Без оповещения** — таймер завершается молча
 
 ### 📋 Управление пресетами
 - **Создание собственных пресетов** с именами
@@ -31,7 +58,7 @@
 ### ⚙️ Настройки приложения
 - 🎨 **Прозрачность окна** — регулировка от 30% до 100%
 - 🔊 **Громкость по умолчанию** — 0-100%
-- 🔔 **Тип оповещения по умолчанию** — звук/световое/оба/без оповещения
+- 🔔 **Тип оповещения по умолчанию** — звук/уведомление/оба/без оповещения
 - 📌 **Поверх всех окон** — держать приложение всегда видимым
 - 📥 **Сворачивание в трей** — минимизация в системный трей
 - 🚀 **Запуск свернутым** — старт приложения в фоне
@@ -115,8 +142,8 @@ sudo dnf install ./release/vibe-timer-0.1.0-1.x86_64.rpm
 
 ### Совместимость пакетов
 
-Пакеты собраны для **Linux x86_64**. AppImage и DEB собраны на Ubuntu 22.04
-и требуют **glibc ≥ 2.35**; RPM собран на Fedora 43 и требует **glibc ≥ 2.39**:
+Пакеты собраны для **Linux x86_64**. AppImage, DEB и RPM собраны на Ubuntu 22.04
+и требуют **glibc ≥ 2.35**:
 
 | Система | Статус |
 |---|---|
@@ -135,7 +162,7 @@ sudo dnf install ./release/vibe-timer-0.1.0-1.x86_64.rpm
 репозиторий на GitHub, открой **Actions → Build packages → Run workflow**
 и скачай артефакты:
 
-- `vibe-timer-linux-x86_64` — DEB + AppImage, собранные на Ubuntu 22.04;
+- `vibe-timer-linux-x86_64` — DEB + AppImage + RPM, собранные на Ubuntu 22.04;
 - `vibe-timer-windows-x86_64` — MSI и NSIS-установщик (`.exe`).
 
 > Windows-сборка выполняется на `windows-latest`; локально на Linux её
@@ -191,7 +218,7 @@ npm run tauri build
    - Выбрать за сколько секунд показать предупреждение (10с, 30с, 1 мин, 2 мин)
 
 4. **Настроить оповещение:**
-   - Выбрать тип: 🔊 Звук / 💡 Световое / 🔊💡 Оба / 🔇 Без оповещения
+   - Выбрать тип: 🔊 Звук / 🔔 Уведомление / 🔊🔔 Звук + уведомление / 🔇 Без оповещения
    - Настроить громкость слайдером (0-100%)
 
 5. **Запустить:** Нажать кнопку **"Запустить таймер"**
@@ -205,8 +232,8 @@ npm run tauri build
 #### Предупреждение перед действием
 
 За установленное время (например, 30 сек) до выполнения действия:
-- Появится **модальное окно** с предупреждением
-- Сработает **выбранное оповещение** (звук/световое)
+- Если включено уведомление — появится **модальное окно** с предупреждением
+- Сработает **выбранное оповещение** (звук и/или окно предупреждения)
 - Кнопка **"Отменить"** позволяет отменить действие
 
 Если не отменить — система выполнит выбранное действие автоматически.
@@ -260,7 +287,7 @@ npm run tauri build
 - Применяется как значение по умолчанию для новых таймеров
 
 #### Тип оповещения по умолчанию
-- Выпадающий список: Звук / Световое / Оба / Без оповещения
+- Выпадающий список: Только звук / Только уведомление / Звук + уведомление / Без оповещения
 - Кнопка **"Протестировать"** — проверить выбранное оповещение
 
 #### Чекбоксы
@@ -292,6 +319,15 @@ npm run tauri build
 
 ```
 vibe_timer/
+├── .github/
+│   └── workflows/
+│       ├── build.yml             # CI-сборка пакетов
+│       └── release.yml           # релиз по тегу v*
+├── scripts/
+│   ├── package.sh                # локальная сборка пакетов
+│   ├── install.sh                # установка из готовых пакетов
+│   ├── INSTALL.md                # инструкция по установке
+│   └── make_icon.py
 ├── src/                          # React frontend (TypeScript)
 │   ├── components/
 │   │   ├── Timer.tsx            # Главный компонент таймера
@@ -310,7 +346,7 @@ vibe_timer/
 │   │   ├── main.rs              # Tauri app + system tray
 │   │   ├── timer.rs             # Логика таймера (Tokio async)
 │   │   ├── power.rs             # Системные команды (systemctl/shutdown.exe)
-│   │   ├── notifications.rs     # Звуковые/световые оповещения (rodio)
+│   │   ├── notifications.rs     # Звук и уведомление (rodio)
 │   │   ├── presets.rs           # Сохранение/загрузка пресетов (JSON)
 │   │   └── settings.rs          # Настройки приложения (JSON)
 │   ├── capabilities/
@@ -320,6 +356,7 @@ vibe_timer/
 │   └── tauri.conf.json          # Tauri configuration
 ├── package.json
 ├── vite.config.ts
+├── RELEASING.md                  # как выпустить релиз
 └── README.md
 ```
 
@@ -381,6 +418,19 @@ strip = true           # Удалить debug символы
 ```bash
 npm run tauri build -- --no-bundle
 ```
+
+### Релизы
+
+Релиз публикуется автоматически по тегу:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Workflow **Release** соберёт Linux (AppImage, DEB, RPM) и Windows
+(NSIS, MSI), создаст GitHub Release и приложит пакеты и `SHA256SUMS`.
+Подробнее — `RELEASING.md`.
 
 ---
 
@@ -537,15 +587,13 @@ sudo systemctl restart polkit
 
 ## 📄 Лицензия
 
-MIT License
-
-Проект с открытым исходным кодом. Свободно использовать, изменять и распространять.
+MIT License — см. [LICENSE](LICENSE).
 
 ---
 
 ## 🔗 Полезные ссылки
 
-- [Tauri Documentation](https://tauri.app/v1/guides/)
+- [Tauri Documentation](https://v2.tauri.app/)
 - [Rust Book](https://doc.rust-lang.org/book/)
 - [React Documentation](https://react.dev/)
 - [Zustand Documentation](https://docs.pmnd.rs/zustand/getting-started/introduction)

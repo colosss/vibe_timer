@@ -20,8 +20,8 @@ const ACTIONS: { label: string; value: PowerAction }[] = [
 
 const NOTIFICATION_TYPES: { label: string; value: NotificationType }[] = [
   { label: "🔊 Звук", value: "sound" },
-  { label: "💡 Световое", value: "visual" },
-  { label: "🔊💡 Оба", value: "both" },
+  { label: "🔔 Уведомление", value: "notification" },
+  { label: "🔊🔔 Звук + уведомление", value: "both" },
   { label: "🔇 Без оповещения", value: "silent" },
 ];
 

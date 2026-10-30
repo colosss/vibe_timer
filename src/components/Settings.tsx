@@ -14,10 +14,19 @@ function Settings({ onClose }: SettingsProps) {
   const setSettings = useTimerStore((state) => state.setSettings);
   const [localSettings, setLocalSettings] = useState<AppSettings>(settings);
   const [saving, setSaving] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   useEffect(() => {
     setLocalSettings(settings);
   }, [settings]);
+
+  // Превью уведомления автоматически скрывается.
+  useEffect(() => {
+    if (!preview) return;
+
+    const timeout = window.setTimeout(() => setPreview(false), 2500);
+    return () => window.clearTimeout(timeout);
+  }, [preview]);
 
   // Живой предпросмотр прозрачности окна.
   useEffect(() => {
@@ -53,11 +62,17 @@ function Settings({ onClose }: SettingsProps) {
   };
 
   const testNotification = async () => {
+    const type = localSettings.default_notification;
+
     try {
-      await invoke<string>("test_notification", {
-        notificationType: localSettings.default_notification,
+      await invoke("trigger_notification", {
+        notificationType: type,
         volume: localSettings.default_sound_volume,
       });
+
+      if (type === "notification" || type === "both") {
+        setPreview(true);
+      }
     } catch (error) {
       console.error("Ошибка теста оповещения:", error);
       alert(`Не удалось воспроизвести оповещение: ${error}`);
@@ -67,6 +82,11 @@ function Settings({ onClose }: SettingsProps) {
   return (
     <div className="settings-overlay" onClick={handleClose}>
       <div className="settings-modal" onClick={(event) => event.stopPropagation()}>
+        {preview && (
+          <div className="notification-preview" role="status">
+            🔔 Уведомление: таймер завершён
+          </div>
+        )}
         <div className="settings-header">
           <h2>⚙️ Настройки</h2>
           <button className="close-btn" onClick={handleClose} title="Закрыть">
@@ -121,10 +141,13 @@ function Settings({ onClose }: SettingsProps) {
               }
             >
               <option value="sound">🔊 Только звук</option>
-              <option value="visual">💡 Только световое</option>
-              <option value="both">🔊💡 Звук + световое</option>
+              <option value="notification">🔔 Только уведомление</option>
+              <option value="both">🔊🔔 Звук + уведомление</option>
               <option value="silent">🔇 Без оповещения</option>
             </select>
+            <span className="setting-hint">
+              Уведомление — окно с обратным отсчётом и кнопкой отмены.
+            </span>
             <button className="test-btn" onClick={testNotification}>
               Протестировать
             </button>

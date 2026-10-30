@@ -1,11 +1,15 @@
 use serde::{Deserialize, Serialize};
-use tauri::{UserAttentionType, WebviewWindow};
+use tauri::WebviewWindow;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum NotificationType {
     Sound,
-    Visual,
+    /// Показать окно с предупреждением и обратным отсчётом.
+    /// `alias` сохраняет совместимость со старыми настройками и пресетами,
+    /// где этот вариант назывался `visual`.
+    #[serde(alias = "visual")]
+    Notification,
     #[default]
     Both,
     Silent,
@@ -33,11 +37,12 @@ pub fn play_beep(volume: u8) -> Result<(), String> {
     Ok(())
 }
 
-/// Привлечение внимания к окну (мигание в панели задач).
-pub fn flash_window(window: &WebviewWindow) -> Result<(), String> {
-    window
-        .request_user_attention(Some(UserAttentionType::Critical))
-        .map_err(|e| format!("Ошибка привлечения внимания: {}", e))
+/// Показывает окно приложения, даже если оно свёрнуто в трей,
+/// чтобы предупреждение действительно было заметно.
+fn show_notification_window(window: &WebviewWindow) {
+    let _ = window.unminimize();
+    let _ = window.show();
+    let _ = window.set_focus();
 }
 
 async fn play_beep_async(volume: u8) -> Result<(), String> {
@@ -52,39 +57,36 @@ pub async fn trigger_notification(
     volume: u8,
     window: WebviewWindow,
 ) -> Result<(), String> {
-    match notification_type {
-        NotificationType::Sound => play_beep_async(volume).await?,
-        NotificationType::Visual => flash_window(&window)?,
-        NotificationType::Both => {
-            play_beep_async(volume).await?;
-            flash_window(&window)?;
-        }
-        NotificationType::Silent => {}
+    if matches!(
+        notification_type,
+        NotificationType::Notification | NotificationType::Both
+    ) {
+        show_notification_window(&window);
+    }
+
+    if matches!(
+        notification_type,
+        NotificationType::Sound | NotificationType::Both
+    ) {
+        play_beep_async(volume).await?;
     }
 
     Ok(())
 }
 
-#[tauri::command]
-pub async fn test_notification(
-    notification_type: NotificationType,
-    volume: u8,
-    window: WebviewWindow,
-) -> Result<String, String> {
-    match notification_type {
-        NotificationType::Sound => {
-            play_beep_async(volume).await?;
-            Ok("Звуковое оповещение воспроизведено".to_string())
-        }
-        NotificationType::Visual => {
-            flash_window(&window)?;
-            Ok("Световое оповещение выполнено".to_string())
-        }
-        NotificationType::Both => {
-            play_beep_async(volume).await?;
-            flash_window(&window)?;
-            Ok("Звуковое и световое оповещения выполнены".to_string())
-        }
-        NotificationType::Silent => Ok("Беззвучный режим".to_string()),
+#[cfg(test)]
+mod tests {
+    use super::NotificationType;
+
+    #[test]
+    fn legacy_visual_deserializes_as_notification() {
+        let value: NotificationType = serde_json::from_str("\"visual\"").unwrap();
+        assert_eq!(value, NotificationType::Notification);
+    }
+
+    #[test]
+    fn notification_serializes_without_legacy_name() {
+        let value = serde_json::to_string(&NotificationType::Notification).unwrap();
+        assert_eq!(value, "\"notification\"");
     }
 }

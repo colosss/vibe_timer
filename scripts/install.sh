@@ -8,13 +8,13 @@ APPIMAGE=""
 RPM=""
 DEB=""
 
-for f in "$DIR"/vibe-timer-*-x86_64.AppImage; do
+for f in "$DIR"/vibe-timer-*-x86_64.AppImage "$DIR"/vibe-timer-x86_64.AppImage; do
     if [ -f "$f" ]; then APPIMAGE="$f"; break; fi
 done
-for f in "$DIR"/vibe-timer-*-1.x86_64.rpm; do
+for f in "$DIR"/vibe-timer-*-1.x86_64.rpm "$DIR"/vibe-timer-x86_64.rpm; do
     if [ -f "$f" ]; then RPM="$f"; break; fi
 done
-for f in "$DIR"/vibe-timer_*_amd64.deb; do
+for f in "$DIR"/vibe-timer_*_amd64.deb "$DIR"/vibe-timer_amd64.deb; do
     if [ -f "$f" ]; then DEB="$f"; break; fi
 done
 

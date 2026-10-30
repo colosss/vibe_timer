@@ -182,6 +182,34 @@
   color: #F8FAFC;
 }
 
+.notification-preview {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  padding: 14px 22px;
+  border-radius: 12px;
+  background: #1E293B;
+  border: 1px solid #38BDF8;
+  color: #F8FAFC;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  animation: previewSlideDown 0.25s ease;
+}
+
+@keyframes previewSlideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 .settings-footer {
   display: flex;
   gap: 12px;

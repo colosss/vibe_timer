@@ -5,7 +5,7 @@ export type PowerAction =
   | 'restart'
   | 'restart_and_sleep';
 
-export type NotificationType = 'sound' | 'visual' | 'both' | 'silent';
+export type NotificationType = 'sound' | 'notification' | 'both' | 'silent';
 
 export interface TimerConfig {
   duration: number;

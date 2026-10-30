@@ -4,8 +4,8 @@
 
 ## Совместимость
 
-Пакеты собраны для **Linux x86_64**. AppImage и DEB собраны на Ubuntu 22.04
-и требуют **glibc ≥ 2.35**, RPM собран на Fedora 43 и требует **glibc ≥ 2.39**:
+Пакеты собраны для **Linux x86_64**. AppImage, DEB и RPM собраны на Ubuntu 22.04
+и требуют **glibc ≥ 2.35**:
 
 - Fedora 40+ / RHEL 10 — RPM или AppImage;
 - Ubuntu 22.04+ / Debian 12+ — DEB или AppImage;
@@ -21,14 +21,14 @@
 Ничего устанавливать не нужно, достаточно сделать файл исполняемым:
 
 ```bash
-chmod +x vibe-timer-0.1.0-x86_64.AppImage
-./vibe-timer-0.1.0-x86_64.AppImage
+chmod +x vibe-timer*x86_64.AppImage
+./vibe-timer*x86_64.AppImage
 ```
 
 Если в системе нет FUSE 2, запусти так:
 
 ```bash
-./vibe-timer-0.1.0-x86_64.AppImage --appimage-extract-and-run
+./vibe-timer*x86_64.AppImage --appimage-extract-and-run
 ```
 
 Чтобы добавить приложение в меню (без root):
@@ -40,7 +40,7 @@ chmod +x vibe-timer-0.1.0-x86_64.AppImage
 ## Вариант 2 — Fedora / RHEL (RPM, рекомендуется)
 
 ```bash
-sudo dnf install ./vibe-timer-0.1.0-1.x86_64.rpm
+sudo dnf install ./vibe-timer-*x86_64.rpm
 ```
 
 Или через скрипт:
@@ -55,7 +55,7 @@ sudo dnf install ./vibe-timer-0.1.0-1.x86_64.rpm
 ## Вариант 3 — Ubuntu / Debian (DEB)
 
 ```bash
-sudo apt install ./vibe-timer_0.1.0_amd64.deb
+sudo apt install ./vibe-timer*_amd64.deb
 ```
 
 Удаление: `sudo apt remove vibe-timer`.

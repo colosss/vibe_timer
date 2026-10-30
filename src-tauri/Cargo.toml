@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Минималистичный таймер для автоматического управления питанием системы"
 authors = ["vibecode"]
 license = "MIT"
-repository = "https://github.com/yourusername/vibe-timer"
+repository = "https://github.com/colosss/vibe_timer"
 edition = "2021"
 
 [build-dependencies]

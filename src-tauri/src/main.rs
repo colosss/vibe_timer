@@ -110,7 +110,6 @@ fn main() {
             power::execute_power_action,
             power::test_power_action,
             notifications::trigger_notification,
-            notifications::test_notification,
             presets::load_presets,
             presets::add_preset,
             presets::update_preset,

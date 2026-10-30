@@ -246,8 +246,8 @@ function Timer() {
                 }
               >
                 <option value="sound">🔊 Звук</option>
-                <option value="visual">💡 Световое</option>
-                <option value="both">🔊💡 Оба</option>
+                <option value="notification">🔔 Уведомление</option>
+                <option value="both">🔊🔔 Звук + уведомление</option>
                 <option value="silent">🔇 Без оповещения</option>
               </select>
             </div>
