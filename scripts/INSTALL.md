@@ -4,14 +4,14 @@
 
 ## Совместимость
 
-Пакеты собраны на Fedora 43 для **Linux x86_64** и требуют **glibc ≥ 2.39**:
+Пакеты собраны для **Linux x86_64**. AppImage и DEB собраны на Ubuntu 22.04
+и требуют **glibc ≥ 2.35**, RPM собран на Fedora 43 и требует **glibc ≥ 2.39**:
 
-- Fedora 40+ / RHEL 10 — RPM;
-- Ubuntu 24.04+ / Debian 13+ — DEB или AppImage;
+- Fedora 40+ / RHEL 10 — RPM или AppImage;
+- Ubuntu 22.04+ / Debian 12+ — DEB или AppImage;
 - Arch / Manjaro — AppImage;
-- Ubuntu 22.04 / Debian 12 — нужна сборка на Ubuntu 22.04
-  (GitHub Actions → **Build packages**);
-- Windows 10/11 — MSI/EXE собираются в GitHub Actions там же.
+- Ubuntu 20.04 / Debian 11 и старше — не подойдут (glibc < 2.35);
+- Windows 10/11 — MSI/EXE собираются в GitHub Actions.
 
 Проверить версию glibc: `ldd --version | head -1`.
 
