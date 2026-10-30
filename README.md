@@ -92,9 +92,9 @@ npm run package
 
 | Файл | Для чего |
 |---|---|
-| `vibe-timer-0.1.0-x86_64.AppImage` | Один самодостаточный файл, работает без установки |
-| `vibe-timer-0.1.0-1.x86_64.rpm` | Fedora / RHEL, установка в систему |
-| `vibe-timer_0.1.0_amd64.deb` | Ubuntu / Debian |
+| `vibe-timer-0.1.0-x86_64.AppImage` | Linux x86_64, glibc ≥ 2.39; внутри все библиотеки |
+| `vibe-timer-0.1.0-1.x86_64.rpm` | Fedora 40+ / RHEL 10 |
+| `vibe-timer_0.1.0_amd64.deb` | Ubuntu 24.04+ / Debian 13+ |
 
 Самый простой способ:
 
@@ -112,6 +112,35 @@ sudo dnf install ./release/vibe-timer-0.1.0-1.x86_64.rpm
 
 После установки приложение появится в меню как **Vibe Timer**. Подробнее —
 `release/INSTALL.md` (создаётся командой `npm run package`).
+
+### Совместимость пакетов
+
+Локальные пакеты собраны на Fedora 43 для **Linux x86_64** и требуют
+**glibc ≥ 2.39**:
+
+| Система | Статус |
+|---|---|
+| Fedora 40+ / RHEL 10 | ✅ RPM |
+| Ubuntu 24.04+ | ✅ DEB / AppImage |
+| Debian 13+ | ✅ DEB / AppImage |
+| Arch / Manjaro | ✅ AppImage (glibc в rolling новее) |
+| Ubuntu 22.04 / Debian 12 | ⚠️ нужна сборка на Ubuntu 22.04 (CI) |
+| Windows 10/11 | ⚠️ собирается в CI (MSI/NSIS) |
+| ARM / aarch64 | ❌ не собиралось |
+| macOS | ❌ действия питания не реализованы |
+
+Проверить glibc: `ldd --version | head -1`.
+
+Для старых дистрибутивов и Windows в репозитории есть
+`.github/workflows/build.yml`. Запушь репозиторий на GitHub, открой
+**Actions → Build packages → Run workflow** и скачай артефакты:
+
+- `vibe-timer-linux-x86_64` — DEB + AppImage, собранные на Ubuntu 22.04
+  (glibc 2.35; AppImage подходит для Ubuntu 22.04+, Debian 12+, Fedora, Arch);
+- `vibe-timer-windows-x86_64` — MSI и NSIS-установщик (`.exe`).
+
+> Windows-сборка выполняется на `windows-latest`; локально на Linux её
+> получить нельзя без отдельного кросс-тулчейна.
 
 ---
 

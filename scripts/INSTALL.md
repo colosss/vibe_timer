@@ -2,6 +2,19 @@
 
 В этой папке лежат готовые пакеты. Выбери один способ.
 
+## Совместимость
+
+Пакеты собраны на Fedora 43 для **Linux x86_64** и требуют **glibc ≥ 2.39**:
+
+- Fedora 40+ / RHEL 10 — RPM;
+- Ubuntu 24.04+ / Debian 13+ — DEB или AppImage;
+- Arch / Manjaro — AppImage;
+- Ubuntu 22.04 / Debian 12 — нужна сборка на Ubuntu 22.04
+  (GitHub Actions → **Build packages**);
+- Windows 10/11 — MSI/EXE собираются в GitHub Actions там же.
+
+Проверить версию glibc: `ldd --version | head -1`.
+
 ## Вариант 1 — AppImage (один файл, без установки)
 
 Самодостаточный файл: внутри уже есть WebKit, GTK и appindicator.
@@ -65,6 +78,8 @@ sha256sum -c SHA256SUMS
 
 ## Windows
 
-Готового `.exe` здесь нет: установщик Windows собирается на Windows командой
+Готового `.exe` здесь нет: установщик Windows собирается в GitHub Actions
+(workflow `.github/workflows/build.yml`, артефакт
+`vibe-timer-windows-x86_64`) либо локально на Windows командой
 `npm run tauri build` (см. `README.md`). На Linux кросс-сборка установщика
 Windows не поддерживается.
