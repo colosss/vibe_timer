@@ -153,9 +153,8 @@ Backend: remaining == 0
     timer.rs: cancel_timer() → cancel_flag = true
          │
          ▼
-    Async loop:
-         ├─ emit("timer_cancelled")
-         └─ state.is_running = false
+    Сразу инвалидирует поколение и сбрасывает состояние
+         └─ emit("timer_cancelled")
          │
          ▼
     App.tsx: reset() store, скрыть предупреждение
@@ -191,7 +190,7 @@ Backend: remaining == 0
 - `TimerManager` хранит состояние под `Mutex`.
 - `start_timer` запускает Tokio-задачу с шагом 100 мс.
 - `pause_timer` переключает паузу и возвращает новое состояние.
-- `cancel_timer` выставляет флаг отмены.
+- `cancel_timer` сразу сбрасывает состояние и инвалидирует поколение цикла.
 - `get_timer_state` возвращает снимок состояния.
 - `generation` защищает от «осиротевших» циклов при перезапуске.
 
@@ -251,7 +250,7 @@ Backend: remaining == 0
 
 | Событие | Payload | Когда |
 |---------|---------|-------|
-| `timer_tick` | `number` (секунды) | Каждые ~100 мс, кроме паузы |
+| `timer_tick` | `number` (секунды) | При изменении целой секунды (примерно раз в секунду) |
 | `timer_warning` | `number` (секунды) | Один раз при `remaining <= warning_time` |
 | `timer_completed` | — | При `remaining == 0` |
 | `timer_action_failed` | `string` | Если команда питания завершилась ошибкой |
@@ -285,3 +284,16 @@ Backend: remaining == 0
 - CSP не задан (`null`) — при необходимости можно включить.
 - Системные команды питания на Linux могут требовать polkit-разрешений,
   на Windows — прав администратора (см. README).
+
+## Проверка диалогов WebKitGTK
+
+`npm run build` проверяет TypeScript и сборку интерфейса;
+`cargo test --manifest-path src-tauri/Cargo.toml` — проверки Rust.
+Для проверки отрисовки в Linux запустите `npm run dev -- --host 127.0.0.1`,
+затем `/usr/bin/python3 tests/webkit_smoke.py` в графической сессии
+(нужны PyGObject и WebKit2 4.1).
+Тест подменяет Tauri IPC: реальные команды питания не выполняются.
+
+В интерфейсе намеренно нет backdrop-filter: размытие перекрывающихся
+слоёв увеличивает стоимость композиции и вызывает проблемы в WebKitGTK.
+Предупреждение обновляется событиями Rust, поэтому его отсчёт учитывает паузу.

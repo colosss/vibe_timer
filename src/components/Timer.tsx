@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTimerStore } from "../stores/timerStore";
 import type { NotificationType, PowerAction, Preset, TimerConfig } from "../types";
@@ -51,6 +51,7 @@ function Timer() {
     settings.default_notification
   );
   const [soundVolume, setSoundVolume] = useState(settings.default_sound_volume);
+  const starting = useRef(false);
   const [showPresets, setShowPresets] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -70,6 +71,7 @@ function Timer() {
   const displaySeconds = isRunning ? remaining : previewSeconds;
 
   const handleStart = async () => {
+    if (starting.current) return;
     const duration = hasCustomDuration ? customSeconds : selectedDuration;
 
     if (!Number.isFinite(duration) || duration <= 0) {
@@ -77,6 +79,7 @@ function Timer() {
       return;
     }
 
+    starting.current = true;
     const config: TimerConfig = {
       duration,
       action: selectedAction,
@@ -98,6 +101,8 @@ function Timer() {
       console.error("Ошибка запуска таймера:", error);
       alert(`Не удалось запустить таймер: ${error}`);
       reset();
+    } finally {
+      starting.current = false;
     }
   };
 

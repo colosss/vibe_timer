@@ -53,6 +53,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Test Rust backend
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml
+
       - name: Build packages
         run: npm run tauri build -- --bundles ${{ matrix.bundles }}
 

@@ -82,7 +82,7 @@ pub fn load_settings(app: AppHandle) -> Result<AppSettings, String> {
 }
 
 #[tauri::command]
-pub fn save_settings(
+pub async fn save_settings(
     app: AppHandle,
     window: WebviewWindow,
     settings: AppSettings,

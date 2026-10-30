@@ -131,7 +131,8 @@ function PresetForm({ title, form, busy, onChange, onCancel, onSave }: PresetFor
 }
 
 function Presets({ onClose, onSelectPreset }: PresetsProps) {
-  const { presets, setPresets } = useTimerStore();
+  const presets = useTimerStore((state) => state.presets);
+  const setPresets = useTimerStore((state) => state.setPresets);
   const [editing, setEditing] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Preset | null>(null);
   const [isAdding, setIsAdding] = useState(false);

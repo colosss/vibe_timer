@@ -23,7 +23,6 @@ function App() {
   const windowOpacity = useTimerStore((state) => state.settings.window_opacity);
 
   const [warning, setWarning] = useState<{ seconds: number } | null>(null);
-
   // Загружаем настройки и пресеты при старте.
   useEffect(() => {
     let cancelled = false;
@@ -76,6 +75,7 @@ function App() {
     register(
       listen<number>("timer_tick", (event) => {
         setRemaining(event.payload);
+        setWarning((current) => current ? { seconds: event.payload } : null);
       })
     );
 
@@ -126,21 +126,6 @@ function App() {
       unlisteners.forEach((unlisten) => unlisten());
     };
   }, [reset, setRemaining, setRunning]);
-
-  // Обратный отсчёт в модальном окне предупреждения.
-  useEffect(() => {
-    if (!warning || warning.seconds <= 0) {
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      setWarning((current) =>
-        current ? { seconds: current.seconds - 1 } : null
-      );
-    }, 1000);
-
-    return () => window.clearTimeout(timeout);
-  }, [warning]);
 
   const handleCancelWarning = async () => {
     try {
