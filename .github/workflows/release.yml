@@ -50,6 +50,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Build frontend for Tauri tests
+        run: npm run build
+
       - name: Test Rust backend
         run: cargo test --locked --manifest-path src-tauri/Cargo.toml
 
@@ -85,6 +88,9 @@ jobs:
           workspaces: "src-tauri -> target"
 
       - run: npm ci
+
+      - name: Build frontend for Tauri tests
+        run: npm run build
 
       - name: Test Rust backend
         run: cargo test --locked --manifest-path src-tauri/Cargo.toml
