@@ -430,3 +430,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(34, 211, 238, 0.5);
 }
+
+/* SVG icons avoid platform color-emoji font rendering (COLRv1/Skia). */
+.timer-header h1,
+.presets-header h2,
+.settings-header h2,
+.notification-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lucide { flex-shrink: 0; }

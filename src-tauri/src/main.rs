@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod fontconfig;
 mod notifications;
 mod power;
 mod presets;
@@ -17,6 +18,11 @@ use timer::TimerManager;
 pub(crate) struct CloseGuard(pub(crate) AtomicBool);
 
 fn main() {
+    #[cfg(target_os = "linux")]
+    let _font_policy = fontconfig::configure().unwrap_or_else(|error| {
+        eprintln!("Не удалось применить защиту цветных шрифтов AppImage: {error}");
+        None
+    });
     tauri::Builder::default()
         .manage(TimerManager::default())
         .manage(CloseGuard(AtomicBool::new(true)))

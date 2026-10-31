@@ -15,7 +15,7 @@ window.__TAURI_INTERNALS__ = {
  invoke: async (cmd, args) => {
  if(cmd === 'plugin:event|listen') { listeners[args.event] = callbacks[args.handler]; return ++id; }
  if(cmd === 'load_settings') return {window_opacity:95,default_sound_volume:0,default_notification:'notification',always_on_top:false,minimize_to_tray:true,start_minimized:false};
- if(cmd === 'load_presets') return [{name:'Test',duration:3600,action:'sleep',warning_time:30,notification_type:'notification',sound_volume:0}];
+ if(cmd === 'load_presets') return [{name:'Test \u{1F5D1}\uFE0F \u{1F50C}',duration:3600,action:'sleep',warning_time:30,notification_type:'notification',sound_volume:0}];
  return null;
  }
 };
@@ -35,6 +35,15 @@ checks = r'''
  for(let i=0;i<8;i++) {
  document.querySelector('[title="Пресеты"]').click(); await wait(80);
  assert(document.querySelector('.presets-modal'),'presets');
+ assert(document.querySelector('.presets-header svg'),'SVG presets icon');
+ if(i===0) {
+ document.querySelector('[title="Редактировать"]').click(); await wait(80);
+ assert(document.querySelector('.preset-edit-form'),'edit preset');
+ click('Отмена'); await wait(80);
+ click('Добавить пресет'); await wait(80);
+ assert(document.querySelector('.preset-edit-form'),'add preset');
+ click('Отмена'); await wait(80);
+ }
  click('Применить'); await wait(80);
  assert(!document.querySelector('.presets-modal'),'close presets');
  }
@@ -45,6 +54,7 @@ checks = r'''
  click('Запустить таймер'); await wait(100);
  emitTest('timer_warning',30); await wait(100);
  assert(document.querySelector('.warning-modal'),'warning');
+ assert(document.querySelector('.warning-icon svg'),'SVG warning icon');
  emitTest('timer_tick',29); await wait(100);
  assert(document.querySelector('.warning-modal').textContent.includes('29'),'warning update');
  await wait(1200);

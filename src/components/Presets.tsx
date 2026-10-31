@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ClipboardList, Clock, Plug, TriangleAlert, Pencil, Trash2, X } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTimerStore } from "../stores/timerStore";
 import type { NotificationType, PowerAction, Preset } from "../types";
@@ -19,10 +20,10 @@ const ACTIONS: { label: string; value: PowerAction }[] = [
 ];
 
 const NOTIFICATION_TYPES: { label: string; value: NotificationType }[] = [
-  { label: "🔊 Звук", value: "sound" },
-  { label: "🔔 Уведомление", value: "notification" },
-  { label: "🔊🔔 Звук + уведомление", value: "both" },
-  { label: "🔇 Без оповещения", value: "silent" },
+  { label: "Звук", value: "sound" },
+  { label: "Уведомление", value: "notification" },
+  { label: "Звук + уведомление", value: "both" },
+  { label: "Без оповещения", value: "silent" },
 ];
 
 interface PresetFormProps {
@@ -218,9 +219,9 @@ function Presets({ onClose, onSelectPreset }: PresetsProps) {
     <div className="presets-overlay" onClick={onClose}>
       <div className="presets-modal" onClick={(event) => event.stopPropagation()}>
         <div className="presets-header">
-          <h2>📋 Управление пресетами</h2>
-          <button className="close-btn" onClick={onClose}>
-            ✕
+          <h2><ClipboardList size={24} aria-hidden="true" /> Управление пресетами</h2>
+          <button className="close-btn" onClick={onClose} title="Закрыть">
+            <X size={24} aria-hidden="true" />
           </button>
         </div>
 
@@ -250,13 +251,13 @@ function Presets({ onClose, onSelectPreset }: PresetsProps) {
                     <div className="preset-info">
                       <h3>{preset.name}</h3>
                       <div className="preset-details">
-                        <span>⏱ {formatDuration(preset.duration)}</span>
+                        <span><Clock size={14} aria-hidden="true" /> {formatDuration(preset.duration)}</span>
                         <span>
-                          🔌{" "}
+                          <Plug size={14} aria-hidden="true" />
                           {ACTIONS.find((action) => action.value === preset.action)?.label ??
                             preset.action}
                         </span>
-                        <span>⚠️ {preset.warning_time} сек</span>
+                        <span><TriangleAlert size={14} aria-hidden="true" /> {preset.warning_time} сек</span>
                       </div>
                     </div>
                     <div className="preset-actions">
@@ -276,7 +277,7 @@ function Presets({ onClose, onSelectPreset }: PresetsProps) {
                         disabled={busy}
                         title="Редактировать"
                       >
-                        ✏️
+                        <Pencil size={16} aria-hidden="true" />
                       </button>
                       <button
                         className="delete-btn"
@@ -284,7 +285,7 @@ function Presets({ onClose, onSelectPreset }: PresetsProps) {
                         disabled={busy}
                         title="Удалить"
                       >
-                        🗑️
+                        <Trash2 size={16} aria-hidden="true" />
                       </button>
                     </div>
                   </div>

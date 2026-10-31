@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { X, Save } from "lucide-react";
+import { X, Save, Bell, Settings as SettingsIcon } from "lucide-react";
 import { useTimerStore } from "../stores/timerStore";
 import type { AppSettings, NotificationType } from "../types";
 import "./Settings.css";
@@ -84,11 +84,11 @@ function Settings({ onClose }: SettingsProps) {
       <div className="settings-modal" onClick={(event) => event.stopPropagation()}>
         {preview && (
           <div className="notification-preview" role="status">
-            🔔 Уведомление: таймер завершён
+            <Bell size={18} aria-hidden="true" /> Уведомление: таймер завершён
           </div>
         )}
         <div className="settings-header">
-          <h2>⚙️ Настройки</h2>
+          <h2><SettingsIcon size={24} aria-hidden="true" /> Настройки</h2>
           <button className="close-btn" onClick={handleClose} title="Закрыть">
             <X size={24} />
           </button>
@@ -140,10 +140,10 @@ function Settings({ onClose }: SettingsProps) {
                 })
               }
             >
-              <option value="sound">🔊 Только звук</option>
-              <option value="notification">🔔 Только уведомление</option>
-              <option value="both">🔊🔔 Звук + уведомление</option>
-              <option value="silent">🔇 Без оповещения</option>
+              <option value="sound">Только звук</option>
+              <option value="notification">Только уведомление</option>
+              <option value="both">Звук + уведомление</option>
+              <option value="silent">Без оповещения</option>
             </select>
             <span className="setting-hint">
               Уведомление — окно с обратным отсчётом и кнопкой отмены.

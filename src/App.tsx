@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TriangleAlert } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { useTimerStore } from "./stores/timerStore";
@@ -145,7 +146,7 @@ function App() {
       {warning && (
         <div className="warning-overlay">
           <div className="warning-modal">
-            <div className="warning-icon">⚠️</div>
+            <div className="warning-icon"><TriangleAlert size={48} aria-hidden="true" /></div>
             <h2>Предупреждение!</h2>
             <p>
               Система выполнит действие

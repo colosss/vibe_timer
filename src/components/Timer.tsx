@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ClipboardList, Settings as SettingsIcon, Timer as TimerIcon } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTimerStore } from "../stores/timerStore";
 import type { NotificationType, PowerAction, Preset, TimerConfig } from "../types";
@@ -149,21 +150,21 @@ function Timer() {
 
       <div className="timer-container">
         <div className="timer-header">
-          <h1>⏱ Vibe Timer</h1>
+          <h1><TimerIcon size={28} aria-hidden="true" /> Vibe Timer</h1>
           <div className="header-buttons">
             <button
               className="header-btn"
               onClick={() => setShowPresets(true)}
               title="Пресеты"
             >
-              📋
+              <ClipboardList size={20} aria-hidden="true" />
             </button>
             <button
               className="header-btn"
               onClick={() => setShowSettings(true)}
               title="Настройки"
             >
-              ⚙️
+              <SettingsIcon size={20} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -172,7 +173,7 @@ function Timer() {
           <div className="time-value">{formatTime(displaySeconds)}</div>
           {isRunning && (
             <div className="timer-status">
-              {isPaused ? "⏸ Пауза" : "▶ Запущен"}
+              {isPaused ? "Пауза" : "Запущен"}
             </div>
           )}
         </div>
@@ -250,10 +251,10 @@ function Timer() {
                   setNotificationType(event.target.value as NotificationType)
                 }
               >
-                <option value="sound">🔊 Звук</option>
-                <option value="notification">🔔 Уведомление</option>
-                <option value="both">🔊🔔 Звук + уведомление</option>
-                <option value="silent">🔇 Без оповещения</option>
+                <option value="sound">Звук</option>
+                <option value="notification">Уведомление</option>
+                <option value="both">Звук + уведомление</option>
+                <option value="silent">Без оповещения</option>
               </select>
             </div>
 
@@ -285,10 +286,10 @@ function Timer() {
 
             <div className="control-buttons">
               <button className="control-btn" onClick={handlePause}>
-                {isPaused ? "▶ Продолжить" : "⏸ Пауза"}
+                {isPaused ? "Продолжить" : "Пауза"}
               </button>
               <button className="control-btn cancel" onClick={handleCancel}>
-                ✕ Отменить
+                Отменить
               </button>
             </div>
           </>
